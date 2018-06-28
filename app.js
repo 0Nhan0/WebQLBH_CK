@@ -67,7 +67,7 @@ app.use('/user', restrict, userController);
 
 app.use(handle404MDW);
 
-app.listen(2116, () => {
+app.listen(2000, () => {
     console.log('server running on port 3000');
 });
 
