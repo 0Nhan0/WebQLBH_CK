@@ -51,18 +51,18 @@
 <div style="text-align: center">
 	<ul class="pagination">
 		<li>
-			<a href="?page=1" aria-label="Previous"><span aria-hidden="true">«</span></a>
+			<a href="/product/search/?page=1" aria-label="Previous"><span aria-hidden="true">«</span></a>
 		</li>
 		{{#each page_numbers}}
 			{{#if isCurPage}}
 				<li class="active"><a href="">{{value}}</a></li>
 			{{else}}
-				<li><a href="?page={{value}}">{{value}}</a></li>
+				<li><a href="/product/search/?page={{value}}">{{value}}</a></li>
 			{{/if}}
 		{{/each}}
 		{{#with max_page}}
 		<li>
-			<a href="?page={{max}}" aria-label="Next"><span aria-hidden="true">»</span></a>
+			<a href="/product/search/?page={{max}}" aria-label="Next"><span aria-hidden="true">»</span></a>
 		</li>
 		{{/with}}
 	</ul>

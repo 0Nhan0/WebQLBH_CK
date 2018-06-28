@@ -247,4 +247,94 @@ router.post('/edit', (req, res) => {
     });
 });
 
+var pn;
+router.post('/search', (req, res) => {
+    var proName = req.body.proName;
+    pn = proName;
+
+    var page = req.query.page;
+    if (!page) {page = 1;}
+    if (page < 1) page = 1;
+
+
+    var offset = (page - 1) * config.PRODUCTS_PER_PAGE;
+
+    var p1 = productRepo.loadPageBySearch(proName, offset);
+    var p2 = productRepo.countBySearch(proName);
+    Promise.all([p1, p2]).then(([pRows, countRows]) => {
+
+        var total = countRows[0].total;
+        var nPages = total / config.PRODUCTS_PER_PAGE;
+        if (total % config.PRODUCTS_PER_PAGE > 0) {
+            nPages++;
+        }
+
+        var numbers = [];
+        for (i = 1; i <= nPages; i++) {
+            numbers.push({
+                value: i,
+                isCurPage: i === +page
+            });
+        }
+        var temp = [];
+        var t = Math.floor(nPages);
+        temp.push({
+            max: t
+        });
+
+        var vm = {
+            products: pRows,
+            noProducts: pRows.length === 0,
+            page_numbers: numbers,
+            max_page: temp[0]
+        };
+
+        res.render('product/search', vm);
+    });
+});
+
+router.get('/search', (req, res) => {
+    var proName = pn;
+
+    var page = req.query.page;
+    if (!page) {page = 1;}
+    if (page < 1) page = 1;
+
+
+    var offset = (page - 1) * config.PRODUCTS_PER_PAGE;
+
+    var p1 = productRepo.loadPageBySearch(proName, offset);
+    var p2 = productRepo.countBySearch(proName);
+    Promise.all([p1, p2]).then(([pRows, countRows]) => {
+
+        var total = countRows[0].total;
+        var nPages = total / config.PRODUCTS_PER_PAGE;
+        if (total % config.PRODUCTS_PER_PAGE > 0) {
+            nPages++;
+        }
+
+        var numbers = [];
+        for (i = 1; i <= nPages; i++) {
+            numbers.push({
+                value: i,
+                isCurPage: i === +page
+            });
+        }
+        var temp = [];
+        var t = Math.floor(nPages);
+        temp.push({
+            max: t
+        });
+
+        var vm = {
+            products: pRows,
+            noProducts: pRows.length === 0,
+            page_numbers: numbers,
+            max_page: temp[0]
+        };
+
+        res.render('product/search', vm);
+    });
+});
+
 module.exports = router;

@@ -46,6 +46,16 @@ exports.single = id => {
 	return db.load(sql);
 }
 
+exports.loadPageBySearch = (proName, offset) => {
+    var sql = `select * from products where ProName like '%${proName}%' limit ${config.PRODUCTS_PER_PAGE} offset ${offset}`;
+    return db.load(sql);
+}
+
+exports.countBySearch = proName => {
+    var sql = `select count(*) as total from products where ProName like '%${proName}%'`;
+    return db.load(sql);
+}
+
 exports.add = (product) => {
     var sql = `insert into products(ProName, Price, Quantity, Viewed, Sold, Origin, Species, Firm, Arrive) values('${product.ProName}', '${product.Price}', '${product.Quantity}', '${product.Viewed}', '${product.Sold}', '${product.Origin}', '${product.Species}', '${product.Firm}', '${product.Arrive}')`;
     return db.save(sql);
